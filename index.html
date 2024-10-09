@@ -131,6 +131,7 @@
         function playPromoVideo() {
             promoOverlay.style.display = 'block';
             promoVideo.muted = true;  // Ensure video starts muted to prevent autoplay issues
+            promoVideo.currentTime = 0;
             promoVideo.play().then(() => {
                 promoVideo.muted = false;  // Unmute once playing
                 console.log("Promo video is playing with audio");
