@@ -77,13 +77,13 @@
             background-color: #0056b3;
         }
         #center-image {
-            display: none;            /* Initially hidden */
-            position: fixed;         /* Fixed position to center it */
-            top: 50%;                /* Center vertically */
-            left: 50%;               /* Center horizontally */
-            transform: translate(-50%, -50%); /* Adjust for element size */
-            opacity: 0.5;           /* Set opacity to 0.5 */
-            z-index: 4;             /* Ensure it appears above other elements */
+            display: none;         
+            position: fixed;         
+            top: 50%;                
+            left: 50%;               
+            transform: translate(-50%, -50%); 
+            opacity: 0.5;           
+            z-index: 4;            
         }
 
     </style>
@@ -99,15 +99,15 @@
 
     <video id="video-feed" playsinline></video>
     <div id="promo-overlay">
-        <video id="promo-video" preload="auto" autoplay playsinline loop muted>
+        <video id="promo-video" autoplay playsinline loop muted>
             <source src="pepsi video.mp4" type="video/mp4">
             Your browser does not support the video tag.
         </video>
     </div>
 
     <script>
-        var socket = io.connect('http://localhost:8000');
-        // var socket = io.connect('https://pepsi.dbaego.com/');
+        // var socket = io.connect('http://localhost:8000');
+        var socket = io.connect('https://pepsi.dbaego.com/');
         // https://pepsi-logo-detection.netlify.app
         var videoFeed = document.getElementById("video-feed");
         var promoOverlay = document.getElementById("promo-overlay");
@@ -124,7 +124,6 @@
             promoVideo.load();
             introOverlay.style.display = "none";
             videoFeed.style.display = "block";
-            centerImage.style.display = "block";
             startCamera();
             
         });
@@ -143,6 +142,16 @@
                 promoOverlay.style.display = 'none';
                 isScanning = true; // Resets scanning to allow for future detections
             };
+
+            promoVideo.onwaiting = function() {
+                // Show loading overlay or spinner
+                promoOverlay.style.display = 'block';
+            };
+
+            // promoVideo.onplaying = function() {
+            //     // Hide loading overlay when video is playing
+            //     promoOverlay.style.display = 'none';
+            // };
         }
 
         function startCamera() {
@@ -153,6 +162,7 @@
             }).then(function(stream) {
                 videoFeed.srcObject = stream;
                 videoFeed.play();
+                centerImage.style.display = "block";
                 
                 setInterval(function() {
                     if (!isSendingFrames) return;  // Stop sending frames if flag is false
